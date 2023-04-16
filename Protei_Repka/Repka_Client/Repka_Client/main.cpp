@@ -17,12 +17,11 @@ int main (int argc, int argv[]){
         string reply;
         string request;
         while(1){
-            cout << "Type your command:\n";
             string request;
             getline(cin, request);
             client_socket << request;
             client_socket >> reply;
-            cout << "We received this response from the server:\n" << reply;
+            cout << reply;
         }
     }catch ( SocketException& e ){
       cout << "Client: Exception was caught:" << e.description() << "\n";
