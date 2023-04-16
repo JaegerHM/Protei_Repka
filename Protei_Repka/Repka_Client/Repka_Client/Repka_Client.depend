@@ -1,0 +1,35 @@
+# depslib dependency file v1.0
+1681648504 source:/home/jaeger/CodeBlocksProjects/Repka_Client/Repka_Client/ClientSocket.cpp
+	"ClientSocket.h"
+	"SocketException.h"
+
+1681648523 /home/jaeger/CodeBlocksProjects/Repka_Client/Repka_Client/ClientSocket.h
+	<string>
+	"Socket.h"
+
+1681648695 /home/jaeger/CodeBlocksProjects/Repka_Client/Repka_Client/Socket.h
+	<sys/types.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	<netdb.h>
+	<unistd.h>
+	<string>
+	<arpa/inet.h>
+
+1681403811 /home/jaeger/CodeBlocksProjects/Repka_Client/Repka_Client/SocketException.h
+	<string>
+
+1681659477 source:/home/jaeger/CodeBlocksProjects/Repka_Client/Repka_Client/main.cpp
+	"ClientSocket.h"
+	"SocketException.h"
+	<iostream>
+	<string>
+
+1681648733 source:/home/jaeger/CodeBlocksProjects/Repka_Client/Repka_Client/Socket.cpp
+	"Socket.h"
+	"string.h"
+	<string.h>
+	<errno.h>
+	<fcntl.h>
+	<iostream>
+
