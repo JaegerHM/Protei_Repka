@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <fstream>
 
 using namespace std;
 
@@ -64,6 +65,8 @@ std::string ServerSocket::process_command(std::string request){
         command = 3;
     if(words[0] == "COUNT")
         command = 4;
+    if(words[0] == "DUMP")
+        command == 6;
     if((words[0] == "EXIT\n") || (words[0] == "EXIT"))
         command = 5;
 
@@ -98,7 +101,7 @@ std::string ServerSocket::process_command(std::string request){
                 string key = words[1];
                 string answer = "";
 
-                std::map<string, string>::iterator it = this->vault.find(key);
+                map<string, string>::iterator it = this->vault.find(key);
                 if (it == vault.end())
                     answer = "NE\n";
                 else
@@ -145,6 +148,78 @@ std::string ServerSocket::process_command(std::string request){
             }
         case 5:
             return "EXIT\n";
+
+        case 6:
+            if(words.size() == 2){
+                string path = words[1];
+
+                map<string, string>::iterator it = this->vault.begin();
+                string answer;
+                fstream file;
+                file.open(path, ios::out);
+                if (file){
+                    string str;
+
+                    for (it; it != this->vault.end(); ++it)
+                    {
+                        str = it->first + " " + it->second + "\n";
+                        file << str;
+                    }
+                    file.close();
+                    answer = "OK\n";
+                }
+                else{
+                    cout << "Error opening file for writing!" << endl;
+                    answer = "NE\n";
+                }
+                return answer;
+            }
+            else{
+                string answer = "NE\n";
+                return answer;
+            }
+
+        case 7:
+            if(words.size() == 2){
+                string path = words[1];
+                fstream file;
+                string str;
+                file.open(path, ios::in);
+
+                if (file){
+                    while(getline(file, str)){
+                        cout << str << endl;
+
+                        stringstream reader(str);
+                        string st;
+                        vector<string> read_pair;
+                        while(reader >> st)    {
+                            read_pair.push_back(st);
+                        }
+
+                        string key = read_pair[0];
+                        string value = read_pair[1];
+
+                        this->vault.insert(pair<string, string>(key, value));
+                    }
+                    file.close();
+                    string answer = "OK\n";
+                    return answer;
+                }
+                else{
+                    cout << "Error opening the file for reading!" << endl;
+                    string answer = "NE\n";
+                    return answer;
+                }
+            }
+            else{
+                    cout << "Error opening the file for reading!" << endl;
+                    string answer = "NE\n";
+                    return answer;
+            }
+
+
+
         case 0:
             string answer = "Acceptable commands:\nPUT <key> <value>\nGET<key>\nDEL<key>\nCOUNT\n";
             return answer;
