@@ -19,11 +19,12 @@
 1681403811 /home/jaeger/CodeBlocksProjects/Repka_Client/Repka_Client/SocketException.h
 	<string>
 
-1681659477 source:/home/jaeger/CodeBlocksProjects/Repka_Client/Repka_Client/main.cpp
+1681748400 source:/home/jaeger/CodeBlocksProjects/Repka_Client/Repka_Client/main.cpp
 	"ClientSocket.h"
 	"SocketException.h"
 	<iostream>
 	<string>
+	"Log.h"
 
 1681648733 source:/home/jaeger/CodeBlocksProjects/Repka_Client/Repka_Client/Socket.cpp
 	"Socket.h"
@@ -31,5 +32,8 @@
 	<string.h>
 	<errno.h>
 	<fcntl.h>
+	<iostream>
+
+1681748184 /home/jaeger/CodeBlocksProjects/Repka_Client/Repka_Client/Log.h
 	<iostream>
 

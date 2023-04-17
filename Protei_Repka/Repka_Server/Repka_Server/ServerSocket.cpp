@@ -4,6 +4,7 @@
 #include <sstream>
 #include <vector>
 #include <fstream>
+#include "Log.h"
 
 using namespace std;
 
@@ -12,10 +13,12 @@ ServerSocket::ServerSocket(int port){
     if(!Socket::create())
         throw SocketException ("Could not create server socket.");
 
+    LOG(DEBUG) << "Socket created";
 
     if(!Socket::bind(port))
         throw SocketException ("Could not bind to port.");
 
+    LOG(DEBUG) << "Socket binded";
 
     if (!Socket::listen())
         throw SocketException ( "Could not listen to socket." );
@@ -72,6 +75,7 @@ std::string ServerSocket::process_command(std::string request){
     if((words[0] == "EXIT\n") || (words[0] == "EXIT"))
         command = 10;
 
+    LOG(DEBUG) << "Command is defined";
 
     switch(command){
         case 1:
@@ -82,11 +86,13 @@ std::string ServerSocket::process_command(std::string request){
                 string answer = "";
                 if (this->vault.find(key) == vault.end())
                 {
+                    LOG(DEBUG) << "Command is OK";
                     answer = "OK\n";
                     this->vault.insert(std::pair<string, string>(key, value));
 
                 }
                 else{
+                    LOG(DEBUG) << "Command is OK";
                     answer = "OK " + this->vault.find(key)->second + "\n";
                     this->vault.erase(key);
                     this->vault.insert(std::pair<string, string>(key, value));
@@ -94,6 +100,7 @@ std::string ServerSocket::process_command(std::string request){
                 return answer;
             }
             else{
+                LOG(DEBUG) << "Command is wrong";
                 string answer = "NE\n";
                 return answer;
             }
@@ -108,10 +115,11 @@ std::string ServerSocket::process_command(std::string request){
                     answer = "NE\n";
                 else
                     answer = "OK res " + it->second + "\n";
-
+                LOG(DEBUG) << "Command is OK";
                 return answer;
             }
             else{
+                LOG(DEBUG) << "Command is wrong";
                 string answer = "NE\n";
                 return answer;
             }
@@ -121,23 +129,26 @@ std::string ServerSocket::process_command(std::string request){
                 string key = words[1];
 
                 string answer = "";
-                if (this->vault[key] == "")
-                {
+                if (this->vault[key] == ""){
+                    LOG(DEBUG) << "Command is wrong";
                     answer = "NE\n";
                 }
                 else{
+                    LOG(DEBUG) << "Command is OK";
                     answer = "OK " + this->vault[key] + "\n";
                     this->vault.erase(key);
                 }
                 return answer;
             }
             else{
+                LOG(DEBUG) << "Command is wrong";
                 string answer = "NE\n";
                 return answer;
             }
 
         case 4:
             if(words.size() == 1){
+                LOG(DEBUG) << "Command is OK";
                 int s = this->vault.size();
                 stringstream ss;
                 ss << s;
@@ -145,6 +156,7 @@ std::string ServerSocket::process_command(std::string request){
                 return answer;
             }
             else{
+                LOG(DEBUG) << "Command is wrong";
                 string answer = "NE\n";
                 return answer;
             }
@@ -165,15 +177,17 @@ std::string ServerSocket::process_command(std::string request){
                         file << str;
                     }
                     file.close();
+                    LOG(DEBUG) << "Command is OK";
                     answer = "OK\n";
                 }
                 else{
-                    cout << "Error opening file for writing!" << endl;
+                    LOG(DEBUG) << "Command is wrong";
                     answer = "NE\n";
                 }
                 return answer;
             }
             else{
+                LOG(DEBUG) << "Command is wrong";
                 string answer = "NE\n";
                 return answer;
             }
@@ -201,17 +215,18 @@ std::string ServerSocket::process_command(std::string request){
                         this->vault.insert(pair<string, string>(key, value));
                     }
                     file.close();
+                    LOG(DEBUG) << "Command is OK";
                     string answer = "OK\n";
                     return answer;
                 }
                 else{
-                    cout << "Error opening the file for reading!" << endl;
+                    LOG(DEBUG) << "Command is wrong";
                     string answer = "NE\n";
                     return answer;
                 }
             }
             else{
-                    cout << "Error opening the file for reading!" << endl;
+                    LOG(DEBUG) << "Command is wrong";
                     string answer = "NE\n";
                     return answer;
             }
