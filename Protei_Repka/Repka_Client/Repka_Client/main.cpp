@@ -17,7 +17,8 @@ int main (int argc, int argv[]){
         int port = 3777;
         if(argc > 1)
             port = argv[0];
-        ClientSocket client_socket ("localhost", port);
+        ClientSocket client_socket ("localhost", port); //connecting to Server
+
         LOG(INFO) << "Server connected";
         string reply;
         string request;

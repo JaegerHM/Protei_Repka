@@ -55,11 +55,12 @@ std::string ServerSocket::process_command(std::string request){
     string s;
     vector<string> words;
     while(ss >> s)    {
-        words.push_back(s);
+        words.push_back(s);  //breaking request into words
     }
 
     int command = 0;
 
+    //defining a command type
     if(words[0] == "PUT")
         command = 1;
     if(words[0] == "GET")
@@ -72,8 +73,6 @@ std::string ServerSocket::process_command(std::string request){
         command = 5;
     if(words[0] == "LOAD")
         command = 6;
-    if((words[0] == "EXIT\n") || (words[0] == "EXIT"))
-        command = 10;
 
     LOG(DEBUG) << "Command is defined";
 
@@ -84,6 +83,7 @@ std::string ServerSocket::process_command(std::string request){
                 string key = words[1];
                 string value = words[2];
                 string answer = "";
+                //if there is no element with given key -- creates one
                 if (this->vault.find(key) == vault.end())
                 {
                     LOG(DEBUG) << "Command is OK";
@@ -91,6 +91,7 @@ std::string ServerSocket::process_command(std::string request){
                     this->vault.insert(std::pair<string, string>(key, value));
 
                 }
+                //if there is an element with given key -- replaces it with new
                 else{
                     LOG(DEBUG) << "Command is OK";
                     answer = "OK " + this->vault.find(key)->second + "\n";
@@ -112,9 +113,9 @@ std::string ServerSocket::process_command(std::string request){
 
                 map<string, string>::iterator it = this->vault.find(key);
                 if (it == vault.end())
-                    answer = "NE\n";
+                    answer = "NE\n";    //if there is no element with given key
                 else
-                    answer = "OK res " + it->second + "\n";
+                    answer = "OK res " + it->second + "\n";     //if there is an element with given key
                 LOG(DEBUG) << "Command is OK";
                 return answer;
             }
@@ -129,12 +130,12 @@ std::string ServerSocket::process_command(std::string request){
                 string key = words[1];
 
                 string answer = "";
-                if (this->vault[key] == ""){
+                if (this->vault[key] == ""){    //if there is no element with given key
                     LOG(DEBUG) << "Command is wrong";
                     answer = "NE\n";
                 }
                 else{
-                    LOG(DEBUG) << "Command is OK";
+                    LOG(DEBUG) << "Command is OK";  //if there is an element with given key
                     answer = "OK " + this->vault[key] + "\n";
                     this->vault.erase(key);
                 }
@@ -149,7 +150,7 @@ std::string ServerSocket::process_command(std::string request){
         case 4:
             if(words.size() == 1){
                 LOG(DEBUG) << "Command is OK";
-                int s = this->vault.size();
+                int s = this->vault.size();     // counting all elements in the vault
                 stringstream ss;
                 ss << s;
                 string answer = ss.str() + "\n";
@@ -173,7 +174,7 @@ std::string ServerSocket::process_command(std::string request){
 
                     for (it; it != this->vault.end(); ++it)
                     {
-                        str = it->first + " " + it->second + "\n";
+                        str = it->first + " " + it->second + "\n";      //saving every element into file
                         file << str;
                     }
                     file.close();
@@ -206,7 +207,7 @@ std::string ServerSocket::process_command(std::string request){
                         string st;
                         vector<string> read_pair;
                         while(reader >> st)    {
-                            read_pair.push_back(st);
+                            read_pair.push_back(st);        //loading every element from given file in the vault
                         }
 
                         string key = read_pair[0];
@@ -230,11 +231,6 @@ std::string ServerSocket::process_command(std::string request){
                     string answer = "NE\n";
                     return answer;
             }
-
-        case 10:
-            return "EXIT\n";
-
-
 
         case 0:
             string answer = "Acceptable commands:\nPUT <key> <value>\nGET<key>\nDEL<key>\nCOUNT\n";

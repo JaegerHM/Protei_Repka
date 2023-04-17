@@ -9,11 +9,11 @@ using namespace std;
 
 int main (int argc, int argv[]){
 
-    RUN_ALL_TESTS();
+    RUN_ALL_TESTS(); //running tests in ServerTester.cpp
 
     try{
-        int port = 3777;
-        if(argc > 1)
+        int port = 3777; //default port for connecting
+        if(argc > 1)    //if port is given from console
             port = argv[0];
         ServerSocket server (port);
 
@@ -22,18 +22,18 @@ int main (int argc, int argv[]){
         while(1){
 
             ServerSocket new_sock;
-            server.accept (new_sock);
+            server.accept (new_sock);   //accepting a new connection with client
             LOG(INFO) << "Server received connection";
 
             try{
                 while (1){
                     string request;
                     string response;
-                    new_sock >> request;
+                    new_sock >> request;    //receiving a request with command and it's arguments
                     LOG(INFO) << "Server received request";
-                    response = server.process_command(request);
+                    response = server.process_command(request);     //processing received command and creating a response
                     LOG(INFO) << "Server processed received request";
-                    new_sock << response;
+                    new_sock << response;       //sending a response to a client
                     LOG(INFO) << "Server sent reply";
                 }
             }catch (SocketException&) {}
